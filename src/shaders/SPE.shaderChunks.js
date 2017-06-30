@@ -12,6 +12,8 @@ SPE.shaderChunks = {
         'uniform sampler2D texture;',
         'uniform vec4 textureAnimation;',
         'uniform float scale;',
+        'uniform vec3 startPos;',
+        'uniform vec3 spread;',
     ].join( '\n' ),
 
     // All attributes used by the vertex shader.

@@ -665,6 +665,8 @@ SPE.shaderChunks = {
         'uniform sampler2D texture;',
         'uniform vec4 textureAnimation;',
         'uniform float scale;',
+        'uniform vec3 startPos;',
+        'uniform vec3 spread;',
     ].join( '\n' ),
 
     // All attributes used by the vertex shader.
@@ -958,12 +960,18 @@ SPE.shaders = {
 
 		// Calculate the required drag to apply to the forces.
 		'    float drag = 1.0 - (positionInTime * 0.5) * acceleration.w;',
+		
+		//'vec3 initPos = pos;',
 
 		// Integrate forces...
 		'    force += vel;',
 		'    force *= drag;',
 		'    force += accel * age;',
 		'    pos += force;',
+
+		//'pos = mod(pos, 20.);',
+
+		'pos = startPos - spread/2. + mod(pos - startPos, spread);',
 
 
 		// Wiggly wiggly wiggle!
@@ -1957,6 +1965,14 @@ SPE.Group = function( options ) {
         scale: {
             type: 'f',
             value: this.scale
+        },
+        startPos: {
+            type: 'v3',
+            value: new THREE.Vector3()
+        },
+        spread: {
+            type: 'v3',
+            value: new THREE.Vector3(20, 20, 20)
         }
     };
 

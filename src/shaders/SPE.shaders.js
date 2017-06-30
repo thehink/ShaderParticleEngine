@@ -49,12 +49,18 @@ SPE.shaders = {
 
 		// Calculate the required drag to apply to the forces.
 		'    float drag = 1.0 - (positionInTime * 0.5) * acceleration.w;',
+		
+		//'vec3 initPos = pos;',
 
 		// Integrate forces...
 		'    force += vel;',
 		'    force *= drag;',
 		'    force += accel * age;',
 		'    pos += force;',
+
+		//'pos = mod(pos, 20.);',
+
+		'pos = startPos - spread/2. + mod(pos - startPos, spread);',
 
 
 		// Wiggly wiggly wiggle!

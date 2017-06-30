@@ -159,6 +159,14 @@ SPE.Group = function( options ) {
         scale: {
             type: 'f',
             value: this.scale
+        },
+        startPos: {
+            type: 'v3',
+            value: new THREE.Vector3()
+        },
+        spread: {
+            type: 'v3',
+            value: new THREE.Vector3(20, 20, 20)
         }
     };
 
