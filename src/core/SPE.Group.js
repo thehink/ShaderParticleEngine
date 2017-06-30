@@ -96,6 +96,9 @@ SPE.Group = function( options ) {
     this.depthTest = utils.ensureTypedArg( options.depthTest, types.BOOLEAN, true );
     this.fog = utils.ensureTypedArg( options.fog, types.BOOLEAN, true );
     this.scale = utils.ensureTypedArg( options.scale, types.NUMBER, 300 );
+    this.wrapParticles = utils.ensureTypedArg( options.wrapParticles, types.BOOLEAN, false );
+    this.startPos = utils.ensureInstanceOf( options.startPos, THREE.Vector3, new THREE.Vector3() );
+    this.spread = utils.ensureInstanceOf( options.spread, THREE.Vector3, new THREE.Vector3() );
 
     // Where emitter's go to curl up in a warm blanket and live
     // out their days.
@@ -162,11 +165,11 @@ SPE.Group = function( options ) {
         },
         startPos: {
             type: 'v3',
-            value: new THREE.Vector3()
+            value: this.startPos,
         },
         spread: {
             type: 'v3',
-            value: new THREE.Vector3(20, 20, 20)
+            value: this.spread,
         }
     };
 
@@ -179,6 +182,7 @@ SPE.Group = function( options ) {
         SHOULD_ROTATE_TEXTURE: false,
         SHOULD_ROTATE_PARTICLES: false,
         SHOULD_WIGGLE_PARTICLES: false,
+        SHOULD_WRAP_PARTICLES: this.wrapParticles,
 
         SHOULD_CALCULATE_SPRITE: this.textureFrames.x > 1 || this.textureFrames.y > 1
     };

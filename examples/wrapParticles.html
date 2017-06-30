@@ -57,14 +57,19 @@
                 texture: {
                     value: THREE.ImageUtils.loadTexture('./img/smokeparticle.png')
                 },
-                fog: true,
+                fog: false,
                 maxParticleCount: 20000,
+                wrapParticles: true,
+                spread: new THREE.Vector3(20, 20, 20),
             });
 
             emitter = new SPE.Emitter({
                 type: SPE.distributions.BOX,
+                size: {
+                    value: 2,
+                },
                 maxAge: {
-                    value: 10,
+                    value: 4,
                 },
                 position: {
                     value: new THREE.Vector3(0, 0, 0),
@@ -76,7 +81,16 @@
                 accleration: {
                     value: new THREE.Vector3(0, -20, 0),
                 },
-                particleCount: 200,
+                particleCount: 1000,
+                // wiggle: {
+                //     value: 50,
+                //     spread: 4,
+                // },
+
+                rotation: {
+                    angle: Math.PI,
+                    angleSpread: Math.PI,
+                },
             });
 
             particleGroup.addEmitter( emitter );
@@ -104,16 +118,22 @@
 
             //newPos.set(0,0,0);
 
-            emitter.position.value = emitter.position.value.set( newPos.x, 0, newPos.z );
-            particleGroup.uniforms.startPos.value = emitter.position.value;
-            particleGroup.uniforms.spread.value = new THREE.Vector3(20, 20, 20);
-            
-            box.position.copy(newPos);
-            box.rotation.y += Math.sin(elapsedTime) / 30;
+            //box.position.copy(newPos);
+            //box.rotation.y += Math.sin(elapsedTime) / 30;
             
 
-            // camera.position.y = Math.sin(elapsedTime * 1.5) * 30;
-            // camera.lookAt(new THREE.Vector3(0,0,0));
+            //camera.position.z = Math.sin(elapsedTime / 2) * 30;
+
+            emitter.position.value = emitter.position.value.copy(newPos);
+            particleGroup.uniforms.startPos.value = emitter.position.value;
+
+            box.position.copy(newPos);
+            
+            // camera.position.z = box.position.z;
+            // camera.position.y = 30;
+            // camera.rotation.x = -Math.PI/2;
+
+            //camera.lookAt(newPos);
 
             renderer.render( scene, camera );
         }

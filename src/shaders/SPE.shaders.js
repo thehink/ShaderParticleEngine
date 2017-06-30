@@ -60,8 +60,6 @@ SPE.shaders = {
 
 		//'pos = mod(pos, 20.);',
 
-		'pos = startPos - spread/2. + mod(pos - startPos, spread);',
-
 
 		// Wiggly wiggly wiggle!
 		'    #ifdef SHOULD_WIGGLE_PARTICLES',
@@ -74,6 +72,10 @@ SPE.shaders = {
 		// Rotate the emitter around it's central point
 		'    #ifdef SHOULD_ROTATE_PARTICLES',
 		'        pos = getRotation( pos, positionInTime );',
+		'    #endif',
+
+		'    #ifdef SHOULD_WRAP_PARTICLES',
+		'		pos = startPos - spread/2. + mod(pos - startPos - 1., spread);',
 		'    #endif',
 
 		// Convert pos to a world-space value
