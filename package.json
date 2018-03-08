@@ -21,6 +21,12 @@
     "shader",
     "spe"
   ],
+  "files": [
+    "package.json",
+    "build/SPE.js",
+    "build/SPE.min.js",
+    "build/SPE.module.js"
+  ],
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-contrib-concat": "^0.5.1",
@@ -31,7 +37,8 @@
   "scripts": {
     "test": "grunt"
   },
-  "main": "build/SPE.min.js",
+  "main": "build/SPE.module.js",
+  "module": "build/HiberPlayer.module.js",
   "directories": {
     "doc": "docs",
     "example": "examples"

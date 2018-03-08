@@ -59,6 +59,14 @@ module.exports = function( grunt ) {
                 src: files,
                 dest: outputPath,
             },
+            module: {
+                options: {
+                    banner: licenseBanner + '\n\nconst THREE = require(\'three\'); \n\n',
+                    footer: '\n\nmodule.exports = SPE;',
+                },
+                src: files,
+                dest: outputPath.replace('.js', '') + '.module.js',
+            },
         },
 
         jsdoc: {
