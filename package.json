@@ -43,7 +43,7 @@
     "doc": "docs",
     "example": "examples"
   },
-  "dependencies": {
-    "three": "^0.84.0"
+  "peerDependencies": {
+    "three": "^0.90.0"
   }
 }
