@@ -990,7 +990,28 @@ SPE.shaders = {
 		'    #endif',
 
 		'    #ifdef SHOULD_WRAP_PARTICLES',
-		'		pos = startPos - spread/2. + mod(pos - startPos - 1., spread);',
+		// '		vec3 k = pos - startPos;',
+		// '		vec3 range = spread;',
+		// '		vec3 kLowerBound = -spread * 0.5;',
+		// '		vec3 kUpperBound = spread * 0.5;',
+		// '		k.x += when_gt(-spread.x * 0.5, k.x) * range.x * ((kLowerBound.x - k.x) / range.x);',
+		// '		k.y += when_gt(-spread.y * 0.5, k.y) * range.y * ((kLowerBound.y - k.y) / range.y);',
+		// '		k.z += when_gt(-spread.z * 0.5, k.z) * range.z * ((kLowerBound.z - k.z) / range.z);',
+		// '		pos = startPos + mod(k - kLowerBound, range);',
+		
+		
+		'		vec3 k = pos - startPos;',
+		'		vec3 range = spread;',
+		'		vec3 kLowerBound = -spread * 0.5;',
+		'		vec3 kUpperBound = spread * 0.5;',
+		'		k = mod(k - kLowerBound, range);',
+		'		pos = startPos;',
+		'		pos.x += when_gt(0.0, k.x) * (kUpperBound.x + 1.0 + k.x);',
+		'		pos.y += when_gt(0.0, k.y) * (kUpperBound.y + 1.0 + k.y);',
+		'		pos.z += when_gt(0.0, k.z) * (kUpperBound.z + 1.0 + k.z);',
+		'		pos.x += when_gt(k.x, 0.) * (kLowerBound.x + k.x);',
+		'		pos.y += when_gt(k.y, 0.) * (kLowerBound.y + k.y);',
+		'		pos.z += when_gt(k.z, 0.) * (kLowerBound.z + k.z);',
 		'    #endif',
 
 		// Convert pos to a world-space value
