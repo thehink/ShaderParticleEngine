@@ -9,6 +9,7 @@
 
     <script type="text/javascript" src="./js/THREE-r84.js"></script>
     <script type="text/javascript" src="./js/Stats.min.js"></script>
+    <script type="text/javascript" src="./js/OrbitControls.js"></script>
     <script type="text/javascript" src="../build/SPE.min.js"></script>
 
 
@@ -20,11 +21,12 @@
         var emitter, particleGroup;
 
         var box;
+        var wrapSize = {x: 30, y: 30, z: 30};
 
         // Setup the scene
         function init() {
             scene = new THREE.Scene();
-            scene.fog = new THREE.Fog( 0x000000, 40, 70 );
+            scene.fog = new THREE.Fog( 0x000000, 40, 500 );
             // scene.fog = new THREE.FogExp2( 0x000000, 0.025 );
 
             camera = new THREE.PerspectiveCamera(64, window.innerWidth/window.innerHeight, 0.1, 10000);
@@ -35,14 +37,21 @@
             renderer.setSize( window.innerWidth, window.innerHeight );
             renderer.setClearColor( scene.fog.color );
 
+            // controls
+            var controls = new THREE.OrbitControls( camera, renderer.domElement );
+            controls.maxPolarAngle = Math.PI * 0.5;
+            controls.minDistance = 10;
+            controls.maxDistance = 500;
+
             stats = new Stats();
             clock = new THREE.Clock();
 
             stats.domElement.style.position = 'absolute';
             stats.domElement.style.top = '0';
 
+
             box = new THREE.Mesh(
-                new THREE.BoxGeometry( 20, 20, 20 ),
+                new THREE.BoxGeometry( wrapSize.x, wrapSize.y, wrapSize.z ),
                 new THREE.MeshBasicMaterial( { wireframe: true, color: 0xffffff } )
             );
             scene.add( box );
@@ -60,7 +69,7 @@
                 fog: false,
                 maxParticleCount: 20000,
                 wrapParticles: true,
-                spread: new THREE.Vector3(20, 20, 20),
+                spread: new THREE.Vector3().copy(wrapSize),
             });
 
             emitter = new SPE.Emitter({
@@ -68,18 +77,24 @@
                 size: {
                     value: 2,
                 },
+                color: {
+                    value: [new THREE.Color('#ff0000'), new THREE.Color('#00ff00'), new THREE.Color('#0000ff')],
+                },
                 maxAge: {
-                    value: 4,
+                    value: 5,
                 },
                 position: {
                     value: new THREE.Vector3(0, 0, 0),
-                    spread: new THREE.Vector3( 20, 0, 20 )
+                    spread: new THREE.Vector3( 0, 0, 0 )
                 },
                 velocity: {
-                    value: new THREE.Vector3(-4, -4, 0),
+                    value: new THREE.Vector3(20, 15, 0),
                 },
-                accleration: {
-                    value: new THREE.Vector3(0, -20, 0),
+                acceleration: {
+                    value: new THREE.Vector3(0, -10, 0),
+                },
+                opacity: {
+                    value: [0, 1, 1, 1, 0]
                 },
                 particleCount: 1000,
                 // wiggle: {
@@ -87,11 +102,13 @@
                 //     spread: 4,
                 // },
 
-                rotation: {
-                    angle: Math.PI,
-                    angleSpread: Math.PI,
-                },
+                // rotation: {
+                //     angle: Math.PI * 2,
+                //     angleSpread: Math.PI,
+                // },
             });
+
+            particleGroup.mesh.frustumCulled = false;
 
             particleGroup.addEmitter( emitter );
             scene.add( particleGroup.mesh );
@@ -114,7 +131,7 @@
         function render( dt, elapsedTime ) {
             particleGroup.tick( dt );
 
-            var newPos = new THREE.Vector3(Math.sin(elapsedTime / 3) * 40, 0, 0);
+            var newPos = new THREE.Vector3(Math.sin(elapsedTime / 3) * 10, 0, 0);
 
             //newPos.set(0,0,0);
 
